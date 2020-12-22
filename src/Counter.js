@@ -4,7 +4,7 @@ import counter from './Counter.module.css';
 let sint;
 
 function Counter(props, ref) {
-  let [currentValue, setCurrentValue] = useState(10);
+  let [currentValue, setCurrentValue] = useState(0);
   let [title, setTitle] = useState('');
 
   useImperativeHandle(ref, () => ({
@@ -39,7 +39,7 @@ function Counter(props, ref) {
       <h1>{title}</h1>
       <p>{currentValue}</p>
       <button id={counter.name} className={`${counter.button} ${counter.button1}`} onClick={increase}>submit</button>
-      <button className={counter.button} onClick={updateTitle}>submit</button>
+      <button className={counter.button} onClick={updateTitle}>Show title</button>
     </div>
   )
 }

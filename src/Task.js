@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import Button from "./Button";
+import ThemeContext from "./ThemeContext";
 
 export default function Task(props) {
+  const { currentTheme } = useContext(ThemeContext);
+
   return (
-    <div>
+    <div className={`task-${currentTheme}`}>
       <input type="checkbox" />
       <span>{props.text}</span>
       <button
