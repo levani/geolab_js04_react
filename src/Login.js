@@ -1,38 +1,29 @@
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
+import TextField from '@material-ui/core/TextField';
 import UserContext from "./UserContext";
+import axios from 'axios';
+import { useHistory } from "react-router-dom";
+import useAuth from "./hooks/useAuth";
 
 export default function Login() {
-  const {currentUser, setCurrentUser} = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { t, i18n } = useTranslation();
+  let history = useHistory();
+  const { saveToken } = useAuth();
 
-  function onSubmit() {
-    // axios.post('/login', {username, password})
-    //   .then(response => {
-    //     setCurrentUser({
-    //       username: response.user.username,
-    //       name: response.user.name,
-    //       email: response.user.email,
-    //     });
-    //   })
-    //   .catch(() => {
-    //     alert('Wrong username or password');
-    //   })
-
-    if (username === 'test' && password === 'qwerty') {
-      setCurrentUser({
-        username: 'test',
-        name: 'Giorgi'
-      });
-    } else {
-      alert('Wrong username or password');
-    }
-  }
-
-  function changeLanguage(lang) {
-    i18n.changeLanguage(lang);
+  function onSubmit(event) {
+    event.preventDefault();
+    axios.post('http://localhost:5001/js04-b4877/us-central1/api/login', {username, password})
+      .then(response => {
+        const access_token = response.data.access_token;
+        saveToken(access_token);
+        history.push('/blog');
+      })
+      .catch(() => {
+        alert('Wrong username or password');
+      })
   }
 
   return (
@@ -57,10 +48,6 @@ export default function Login() {
       </p>
       <p>
         <button type="submit">{t('login')}</button>
-      </p>
-      <p>
-        <button type="button" onClick={() => changeLanguage('en')}>en</button>
-        <button type="button" onClick={() => changeLanguage('ka')}>ka</button>
       </p>
     </form>
   )
